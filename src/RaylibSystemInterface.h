@@ -28,4 +28,12 @@ public:
     void GetClipboardText(Rml::String& text) override {
         text = ::GetClipboardText();
     }
+
+    void SetMouseCursor(const Rml::String& cursor_name) override {
+        // RmlUi uses "default", "pointer", and "text" cursor names by convention
+        if (cursor_name == "default") ::SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+        else if (cursor_name == "pointer") ::SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+        else if (cursor_name == "text") ::SetMouseCursor(MOUSE_CURSOR_IBEAM);
+        else ::SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+    }
 };

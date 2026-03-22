@@ -46,7 +46,15 @@ target_include_directories(rmlui_renderer_gl3 PRIVATE "${raylib_SOURCE_DIR}/src/
 target_compile_definitions(rmlui_renderer_gl3 PRIVATE "RMLUI_GL3_CUSTOM_LOADER=<glad.h>")
 target_link_libraries(rmlui_renderer_gl3 PUBLIC rmlui_core)
 
+# --- FLECS ---
+FetchContent_Declare(
+    flecs
+    GIT_REPOSITORY https://github.com/SanderMertens/flecs.git
+    GIT_TAG v4.0.4
+)
+FetchContent_MakeAvailable(flecs)
+
 # --- GAME ---
 add_executable(${PROJECT_NAME} src/main.cpp src/RmlUiLayer.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3)
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3 flecs::flecs_static)
 target_compile_options(${PROJECT_NAME} PRIVATE -Os)

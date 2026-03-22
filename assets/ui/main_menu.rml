@@ -5,9 +5,8 @@
 </head>
 <body>
     <div id="menu">
-        <h1>Nestled</h1>
-        <p>A game made by Edge of Dusk</p>
-        <button id="btn-play">Play</button>
+        <h1>House Design</h1>
+        <button id="btn-play">Create New Design</button>
         <button id="btn-settings">Settings</button>
         <button id="btn-quit">Quit</button>
     </div>
