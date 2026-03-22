@@ -195,7 +195,7 @@ int main() {
   bool showFps = false;
 
   // --- Main loop ---
-  while (!WindowShouldClose()) {
+  while (!WindowShouldClose() && !IsKeyPressed(KEY_ESCAPE)) {
     // Handle resize
     if (IsWindowResized()) {
       int w = GetScreenWidth(), h = GetScreenHeight();

@@ -14,7 +14,8 @@ cmake_install.cmake
 compile_commands.json
 
 # IDE / editor
-.vscode/
+.vscode/settings.json
+.vscode/extensions.json
 .idea/
 .cache/
 *.swp
