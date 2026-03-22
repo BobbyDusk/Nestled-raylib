@@ -47,6 +47,6 @@ target_compile_definitions(rmlui_renderer_gl3 PRIVATE "RMLUI_GL3_CUSTOM_LOADER=<
 target_link_libraries(rmlui_renderer_gl3 PUBLIC rmlui_core)
 
 # --- GAME ---
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/RmlUiLayer.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3)
 target_compile_options(${PROJECT_NAME} PRIVATE -Os)
