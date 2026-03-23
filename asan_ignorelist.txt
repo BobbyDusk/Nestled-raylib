@@ -1,0 +1,2 @@
+# ASan/UBSan ignorelist — skip instrumentation for third-party dependencies
+src:*/build/_deps/*
