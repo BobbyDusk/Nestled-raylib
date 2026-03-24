@@ -62,12 +62,15 @@ void RmlUiLayer::Init(int width, int height) {
     Rml::SetRenderInterface(&render_iface);
     Rml::Initialise();
 
+    sys_iface.LoadCursors();
+
     render_iface.SetViewport(width, height);
     ctx = Rml::CreateContext("main", Rml::Vector2i(width, height));
     Rml::Debugger::Initialise(ctx);
 }
 
 void RmlUiLayer::Shutdown() {
+    sys_iface.DestroyCursors();
     Rml::Shutdown();
     RmlGL3::Shutdown();
 }
