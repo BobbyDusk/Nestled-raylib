@@ -57,4 +57,3 @@ FetchContent_MakeAvailable(flecs)
 # --- GAME ---
 add_executable(${PROJECT_NAME} src/main.cpp src/RmlUiLayer.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3 flecs::flecs_static)
-target_compile_options(${PROJECT_NAME} PRIVATE -Os)
