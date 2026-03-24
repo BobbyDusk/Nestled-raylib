@@ -2,10 +2,12 @@ default_target := "build"
 build_dir := "build"
 compiler_c := "clang"
 compiler_cxx := "clang++"
+generator := "Ninja"
 
 # Configure the CMake project with AddressSanitizer (default for development)
 configure build_type="Debug":
     cmake -B {{build_dir}} -S . \
+        -G {{generator}} \
         -DCMAKE_BUILD_TYPE={{build_type}} \
         -DCMAKE_C_COMPILER={{compiler_c}} \
         -DCMAKE_CXX_COMPILER={{compiler_cxx}} \
@@ -17,6 +19,7 @@ configure build_type="Debug":
 # Configure without sanitizers (for release or performance testing)
 configure-noasan build_type="Debug":
     cmake -B {{build_dir}} -S . \
+        -G {{generator}} \
         -DCMAKE_BUILD_TYPE={{build_type}} \
         -DCMAKE_C_COMPILER={{compiler_c}} \
         -DCMAKE_CXX_COMPILER={{compiler_cxx}} \
