@@ -7,7 +7,7 @@
 // Entry point
 // ---------------------------------------------------------------------------
 int main() {
-  const int screenWidth  = 1280;
+  const int screenWidth = 1280;
   const int screenHeight = 720;
 
   SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
@@ -32,11 +32,15 @@ int main() {
     if (IsWindowResized())
       rml.OnResize(GetScreenWidth(), GetScreenHeight());
 
-    if (IsKeyPressed(KEY_FOUR)) showFps = !showFps;
-    if (IsKeyPressed(KEY_SIX))  rml.ToggleDebugger();
+    if (IsKeyPressed(KEY_FOUR))
+      showFps = !showFps;
+    if (IsKeyPressed(KEY_SIX))
+      rml.ToggleDebugger();
     if (IsKeyPressed(KEY_FIVE)) {
-      if (IsWindowState(FLAG_VSYNC_HINT)) ClearWindowState(FLAG_VSYNC_HINT);
-      else                                SetWindowState(FLAG_VSYNC_HINT);
+      if (IsWindowState(FLAG_VSYNC_HINT))
+        ClearWindowState(FLAG_VSYNC_HINT);
+      else
+        SetWindowState(FLAG_VSYNC_HINT);
     }
 
     rml.PumpInput();
@@ -44,7 +48,8 @@ int main() {
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    if (showFps) DrawFPS(10, 10);
+    if (showFps)
+      DrawFPS(10, 10);
 
     // ---- Draw your game with raylib here ----
 

@@ -9,7 +9,9 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "build",
-            "env": {}
+            "env": {
+                "ASAN_OPTIONS": "detect_leaks=0:fast_unwind_on_malloc=0"
+            }
         }
     ]
 }
