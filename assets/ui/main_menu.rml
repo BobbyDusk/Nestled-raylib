@@ -2,13 +2,12 @@
     <head>
         <title>Main Menu</title>
         <link type="text/rcss" href="main_menu.rcss" />
-        <template src="./text-button.rml" />
     </head>
 
     <body>
         <div id="menu">
             <h1>House Design</h1>
-            <button class="text-button" id="btn-play">Create New Design</button>
+            <button class="text-button" id="btn-play">New Design</button>
             <button class="text-button" id="btn-settings">Settings
             </button>
             <button class="text-button" id="btn-quit">

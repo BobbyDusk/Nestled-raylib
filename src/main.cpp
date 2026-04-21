@@ -26,9 +26,21 @@ int main() {
   Rml::LoadFontFace("assets/fonts/Quicksand-Medium.ttf");
   Rml::LoadFontFace("assets/fonts/Quicksand-SemiBold.ttf");
   Rml::LoadFontFace("assets/fonts/Caveat-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-Bold.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-Medium.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-SemiBold.ttf");
+  Rml::LoadFontFace("assets/fonts/Caveat-Bold.ttf");
+  Rml::LoadFontFace("assets/fonts/Caveat-SemiBold.ttf");
+  Rml::LoadFontFace("assets/fonts/Caveat-Medium.ttf");
+  Rml::LoadFontFace("assets/fonts/FuzzyBubbles-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/FuzzyBubbles-Bold.ttf");
+  Rml::LoadFontFace("assets/fonts/Mynerve-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/ReenieBeanie-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/Schoolbell-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/Mansalva-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/ShantellSans-Light.ttf");
+  Rml::LoadFontFace("assets/fonts/ShantellSans-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/ShantellSans-Bold.ttf");
+  Rml::LoadFontFace("assets/fonts/ShantellSans-SemiBold.ttf");
+  Rml::LoadFontFace("assets/fonts/ShantellSans-Medium.ttf");
+
 
 
   if (auto *doc = rml.GetContext()->LoadDocument("assets/ui/main_menu.rml")) {
@@ -60,6 +72,10 @@ int main() {
         el->SetProperty("decorator", "image(" + files[prev] + " fill)");
       }
     }
+
+    // Run one update so RmlUi resolves styles for elements whose decorator
+    // was just set via SetProperty, suppressing spurious font warnings.
+    rml.GetContext()->Update();
   }
 
   bool showFps = false;
