@@ -2,6 +2,10 @@
 
 #include "RmlUiLayer.h"
 #include <RmlUi/Core.h>
+#include <filesystem>
+#include <random>
+#include <string>
+#include <vector>
 
 // ---------------------------------------------------------------------------
 // Entry point
@@ -21,9 +25,42 @@ int main() {
   Rml::LoadFontFace("assets/fonts/Quicksand-Bold.ttf");
   Rml::LoadFontFace("assets/fonts/Quicksand-Medium.ttf");
   Rml::LoadFontFace("assets/fonts/Quicksand-SemiBold.ttf");
+  Rml::LoadFontFace("assets/fonts/Caveat-Regular.ttf");
+  Rml::LoadFontFace("assets/fonts/Quicksand-Bold.ttf");
+  Rml::LoadFontFace("assets/fonts/Quicksand-Medium.ttf");
+  Rml::LoadFontFace("assets/fonts/Quicksand-SemiBold.ttf");
 
-  if (auto *doc = rml.GetContext()->LoadDocument("assets/ui/main_menu.rml"))
+
+  if (auto *doc = rml.GetContext()->LoadDocument("assets/ui/main_menu.rml")) {
     doc->Show();
+
+    // Pick a concrete random file per button so each gets a unique path
+    // and RmlUi's texture cache doesn't collapse them into one texture.
+    std::vector<std::string> files;
+    for (const auto &entry : std::filesystem::directory_iterator("assets/images/text_button"))
+      if (entry.is_regular_file())
+        files.push_back("../images/text_button/" + entry.path().filename().string());
+
+    if (!files.empty()) {
+      std::mt19937 rng(std::random_device{}());
+      Rml::ElementList els;
+      doc->GetElementsByClassName(els, "text-button");
+      size_t prev = files.size(); // sentinel: no previous
+      for (auto *el : els) {
+        // Build a pool excluding the previously used index.
+        std::vector<size_t> pool;
+        pool.reserve(files.size());
+        for (size_t i = 0; i < files.size(); i++)
+          if (i != prev)
+            pool.push_back(i);
+        // Fall back to full pool if only one image exists.
+        if (pool.empty())
+          pool.push_back(prev);
+        prev = pool[std::uniform_int_distribution<size_t>(0, pool.size() - 1)(rng)];
+        el->SetProperty("decorator", "image(" + files[prev] + " fill)");
+      }
+    }
+  }
 
   bool showFps = false;
 

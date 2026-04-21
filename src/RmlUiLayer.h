@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RaylibSystemInterface.h"
-#include "RmlUi_Renderer_GL3.h"
+#include "RaylibRenderInterface.h"
 #include <RmlUi/Core/Context.h>
 
 // Owns all RmlUi state and exposes a simple per-frame lifecycle.
@@ -28,7 +28,7 @@ public:
     Rml::Context* GetContext() { return ctx; }
 
 private:
-    RaylibSystemInterface sys_iface;
-    RenderInterface_GL3   render_iface;
+    RaylibSystemInterface   sys_iface;
+    RaylibRenderInterface   render_iface;
     Rml::Context*         ctx = nullptr;
 };

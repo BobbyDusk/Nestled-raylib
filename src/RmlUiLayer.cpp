@@ -66,6 +66,7 @@ void RmlUiLayer::Init(int width, int height) {
 
     render_iface.SetViewport(width, height);
     ctx = Rml::CreateContext("main", Rml::Vector2i(width, height));
+    ctx->SetDensityIndependentPixelRatio(height / 1080.0f);
     Rml::Debugger::Initialise(ctx);
 }
 
@@ -78,6 +79,7 @@ void RmlUiLayer::Shutdown() {
 void RmlUiLayer::OnResize(int width, int height) {
     render_iface.SetViewport(width, height);
     ctx->SetDimensions(Rml::Vector2i(width, height));
+    ctx->SetDensityIndependentPixelRatio(height / 1080.0f);
 }
 
 void RmlUiLayer::PumpInput() {
