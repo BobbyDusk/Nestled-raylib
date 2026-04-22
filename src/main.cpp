@@ -20,44 +20,31 @@ int main() {
   RmlUiLayer rml;
   rml.Init(screenWidth, screenHeight);
 
-  Rml::LoadFontFace("assets/fonts/Quicksand-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-Light.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-Bold.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-Medium.ttf");
-  Rml::LoadFontFace("assets/fonts/Quicksand-SemiBold.ttf");
-  Rml::LoadFontFace("assets/fonts/Caveat-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/Caveat-Bold.ttf");
-  Rml::LoadFontFace("assets/fonts/Caveat-SemiBold.ttf");
-  Rml::LoadFontFace("assets/fonts/Caveat-Medium.ttf");
-  Rml::LoadFontFace("assets/fonts/FuzzyBubbles-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/FuzzyBubbles-Bold.ttf");
-  Rml::LoadFontFace("assets/fonts/Mynerve-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/ReenieBeanie-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/Schoolbell-Regular.ttf");
   Rml::LoadFontFace("assets/fonts/Mansalva-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/ShantellSans-Light.ttf");
-  Rml::LoadFontFace("assets/fonts/ShantellSans-Regular.ttf");
-  Rml::LoadFontFace("assets/fonts/ShantellSans-Bold.ttf");
-  Rml::LoadFontFace("assets/fonts/ShantellSans-SemiBold.ttf");
-  Rml::LoadFontFace("assets/fonts/ShantellSans-Medium.ttf");
-
-
 
   if (auto *doc = rml.GetContext()->LoadDocument("assets/ui/main_menu.rml")) {
     doc->Show();
 
-    // Pick a concrete random file per button so each gets a unique path
-    // and RmlUi's texture cache doesn't collapse them into one texture.
-    std::vector<std::string> files;
-    for (const auto &entry : std::filesystem::directory_iterator("assets/images/text_button"))
-      if (entry.is_regular_file())
-        files.push_back("../images/text_button/" + entry.path().filename().string());
+    // For each ui-elements subfolder, apply random decorator images to all
+    // elements whose class name matches the folder name.
+    std::mt19937 rng(std::random_device{}());
+    for (const auto &uiElemEntry : std::filesystem::directory_iterator("assets/ui-elements")) {
+      if (!uiElemEntry.is_directory())
+        continue;
 
-    if (!files.empty()) {
-      std::mt19937 rng(std::random_device{}());
+      std::string className = uiElemEntry.path().filename().string();
+
+      std::vector<std::string> files;
+      for (const auto &entry : std::filesystem::directory_iterator(uiElemEntry.path()))
+        if (entry.is_regular_file())
+          files.push_back("../ui-elements/" + className + "/" + entry.path().filename().string());
+
+      if (files.empty())
+        continue;
+
       Rml::ElementList els;
-      doc->GetElementsByClassName(els, "text-button");
-      size_t prev = files.size(); // sentinel: no previous
+      doc->GetElementsByClassName(els, className);
+      size_t prev = files.size(); // sentinel: no previous index
       for (auto *el : els) {
         // Build a pool excluding the previously used index.
         std::vector<size_t> pool;

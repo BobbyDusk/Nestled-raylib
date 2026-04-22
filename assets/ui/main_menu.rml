@@ -13,6 +13,9 @@
             <button class="text-button" id="btn-quit">
                 Quit
             </button>
+            <button class="square-button">
+                <div style="decorator: image('../images/house1.png' contain)"></div>
+            </button>
         </div>
         <div>
         </div>
