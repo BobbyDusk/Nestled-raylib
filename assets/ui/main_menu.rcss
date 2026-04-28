@@ -18,8 +18,7 @@ body {
     justify-content: center;
     width: 400dp;
     padding: 3em;
-    background: #ffffffcc;
-    border: 2dp #999;
+    decorator: image('../images/background/paper_perf_light.png' cover left);
 }
 
 h1 {
