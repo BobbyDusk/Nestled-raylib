@@ -46,6 +46,38 @@ target_include_directories(rmlui_renderer_gl3 PRIVATE "${raylib_SOURCE_DIR}/src/
 target_compile_definitions(rmlui_renderer_gl3 PRIVATE "RMLUI_GL3_CUSTOM_LOADER=<glad.h>")
 target_link_libraries(rmlui_renderer_gl3 PUBLIC rmlui_core)
 
+# --- LIBAOM (AV1 decode backend for AVIF) ---
+FetchContent_Declare(
+    libaom
+    GIT_REPOSITORY https://aomedia.googlesource.com/aom
+    GIT_TAG v3.9.1
+)
+set(ENABLE_TESTS      OFF CACHE BOOL   "" FORCE)
+set(ENABLE_EXAMPLES   OFF CACHE BOOL   "" FORCE)
+set(ENABLE_DOCS       OFF CACHE BOOL   "" FORCE)
+set(ENABLE_TOOLS      OFF CACHE BOOL   "" FORCE)
+set(CONFIG_AV1_ENCODER 0  CACHE NUMBER "" FORCE)
+FetchContent_MakeAvailable(libaom)
+# Expose libaom's headers so libavif can find <aom/aom_decoder.h> etc.
+target_include_directories(aom PUBLIC
+    "${libaom_SOURCE_DIR}"
+    "${libaom_BINARY_DIR}"
+)
+
+# --- LIBAVIF ---
+FetchContent_Declare(
+    libavif
+    GIT_REPOSITORY https://github.com/AOMediaCodec/libavif.git
+    GIT_TAG v1.1.1
+)
+set(AVIF_CODEC_AOM        "SYSTEM" CACHE STRING "" FORCE)
+set(AVIF_CODEC_AOM_ENCODE OFF     CACHE BOOL   "" FORCE)
+set(AVIF_CODEC_AOM_DECODE ON      CACHE BOOL   "" FORCE)
+set(AVIF_LIBYUV           OFF     CACHE STRING "" FORCE)
+set(AVIF_BUILD_APPS       OFF     CACHE BOOL   "" FORCE)
+set(AVIF_BUILD_TESTS      OFF     CACHE BOOL   "" FORCE)
+FetchContent_MakeAvailable(libavif)
+
 # --- FLECS ---
 FetchContent_Declare(
     flecs
@@ -56,4 +88,4 @@ FetchContent_MakeAvailable(flecs)
 
 # --- GAME ---
 add_executable(${PROJECT_NAME} src/main.cpp src/RmlUiLayer.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3 flecs::flecs_static)
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib rmlui rmlui_renderer_gl3 flecs::flecs_static avif)

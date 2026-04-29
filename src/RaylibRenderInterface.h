@@ -2,6 +2,7 @@
 
 #include "RmlUi_Renderer_GL3.h"
 #include "raylib.h"
+#include <avif/avif.h>
 #include <filesystem>
 #include <random>
 #include <vector>
@@ -26,7 +27,39 @@ public:
             path = files[std::uniform_int_distribution<size_t>(0, files.size() - 1)(rng)];
         }
 
-        Image img = LoadImage(path.c_str());
+        Image img;
+
+        if (path.extension() == ".avif") {
+            avifImage* image = avifImageCreateEmpty();
+            avifDecoder* decoder = avifDecoderCreate();
+            avifResult result = avifDecoderReadFile(decoder, image, path.c_str());
+            if (result != AVIF_RESULT_OK) {
+                avifImageDestroy(image);
+                avifDecoderDestroy(decoder);
+                return {};
+            }
+
+            avifRGBImage rgb{};
+            avifRGBImageSetDefaults(&rgb, image);
+            rgb.format = AVIF_RGB_FORMAT_RGBA;
+            rgb.alphaPremultiplied = AVIF_TRUE;
+            avifRGBImageAllocatePixels(&rgb);
+            avifImageYUVToRGB(image, &rgb);
+
+            texture_dimensions = {(int)rgb.width, (int)rgb.height};
+            const size_t data_size = static_cast<size_t>(rgb.width * rgb.height * 4);
+            Rml::TextureHandle handle = GenerateTexture(
+                {reinterpret_cast<const Rml::byte*>(rgb.pixels), data_size},
+                texture_dimensions
+            );
+
+            avifRGBImageFreePixels(&rgb);
+            avifImageDestroy(image);
+            avifDecoderDestroy(decoder);
+            return handle;
+        }
+
+        img = LoadImage(path.c_str());
         if (img.data == nullptr)
             return {};
 
